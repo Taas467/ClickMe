@@ -15,7 +15,7 @@ git push
 (get the git. URL)
 git clone (URL)
 cd (Project)
-code .
+(coding and update)
 
 # download
 git pull

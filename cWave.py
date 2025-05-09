@@ -1,4 +1,5 @@
 import pygame
+from cGameGlobal import *
 
 
 class WavePool:

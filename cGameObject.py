@@ -1,4 +1,5 @@
 import random
+from cGameGlobal import *
 
 
 class GameRule:
@@ -7,9 +8,9 @@ class GameRule:
         self.rect = self.surface.get_rect(center=(x, y))
         self.orginv_x = 5
         self.vx = random.choice([-5, 5])
-        self.orginv_y = -20
+        self.orginv_y = -18
         self.vy = -10  # 初始向上跳
-        self.gravity = 0.4
+        self.gravity = 0.35
         self.height = Height
         self.width = Width
 
@@ -22,16 +23,19 @@ class GameRule:
         if self.rect.top < 0:
             self.rect.top = 0
             self.vy = -self.vy * 0.9
+
         # 碰到底部就彈起
         if self.rect.bottom >= self.height:
             self.rect.bottom = self.height
-            if abs(abs(self.vy) - abs(self.orginv_y)) < 0.5:
+            if abs(abs(self.vy) - abs(self.orginv_y)) < 0.7:
                 self.vy = self.orginv_y
+            elif abs(self.vy) < 5:
+                self.vy = -abs(self.vy) * 2.5
             elif abs(self.vy) < abs(self.orginv_y):
                 self.vy = -abs(self.vy) * 1.1
             else:
                 self.vy = -abs(self.vy) * 0.9
-            if abs(self.vx) < 1:
+            if abs(self.vx) < 2:
                 self.vx = 3 if self.vx > 0 else -3
 
         # 左右邊界反彈
@@ -66,21 +70,21 @@ class mClickMe(GameRule):
         )  # 設定為綠色
 
     def GetClick(self, texts, font):
-        new_emeny = mIsEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
+        game_state.betouch()
+        new_emeny = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
         while True:
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
             if (temp_x - self.rect.x) ** 2 + (temp_y - self.rect.y) ** 2 > 10000:
                 self.rect.x, self.rect.y = temp_x, temp_y
+                self.vy = -10
                 break
         texts.append(new_emeny)
-        
-        
-class mIsEnemy(GameRule):
+
+
+class mEnemy(GameRule):
     def __init__(self, x, y, font, width, height):
-        super().__init__(
-            "IsEnemy", x, y, font, width, height, color=(255, 0, 0)
-        )  # 設定為綠色
+        super().__init__("Enemy", x, y, font, width, height, color=(255, 0, 0))
 
     def GetClick(self, texts, font):
-        x = 1
+        game_state.statestop()
