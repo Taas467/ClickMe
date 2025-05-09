@@ -9,3 +9,13 @@ git push -u origin mian/master
 git add .
 git commit -m "說明"
 git push
+
+# first download :
+(setting user name and email)
+(get the git. URL)
+git clone (URL)
+cd (Project)
+code .
+
+# download
+git pull
