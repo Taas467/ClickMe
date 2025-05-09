@@ -74,8 +74,8 @@ class mClickMe(GameRule):
                 self.rect.x, self.rect.y = temp_x, temp_y
                 break
         texts.append(new_emeny)
-
-
+        
+        
 class mIsEnemy(GameRule):
     def __init__(self, x, y, font, width, height):
         super().__init__(
