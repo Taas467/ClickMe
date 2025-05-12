@@ -8,9 +8,9 @@ class GameRule:
         self.rect = self.surface.get_rect(center=(x, y))
         self.orginv_x = 5
         self.vx = random.choice([-5, 5])
-        self.orginv_y = -18
+        self.orginv_y = -20
         self.vy = -10  # 初始向上跳
-        self.gravity = 0.35
+        self.gravity = 0.4
         self.height = Height
         self.width = Width
 
