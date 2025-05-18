@@ -1,4 +1,5 @@
 import random
+import math
 from cGameGlobal import *
 
 
@@ -64,14 +65,18 @@ class GameRule:
 
 
 class mClickMe(GameRule):
-    def __init__(self, x, y, font, width, height):
+    def __init__(self, x, y, font, Width, Height):
         super().__init__(
-            "ClickMe", x, y, font, width, height, color=(0, 255, 0)
+            "ClickMe", x, y, font, Width, Height, color=(0, 255, 0)
         )  # 設定為綠色
 
     def GetClick(self, texts, font):
         game_state.betouch()
-        new_emeny = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
+        random_temp = random.randint(0, 1000)
+        if random_temp < 200:
+            new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
+        else:
+            new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
         while True:
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
@@ -79,12 +84,54 @@ class mClickMe(GameRule):
                 self.rect.x, self.rect.y = temp_x, temp_y
                 self.vy = -10
                 break
-        texts.append(new_emeny)
+        texts.append(new_enemy)
 
 
 class mEnemy(GameRule):
-    def __init__(self, x, y, font, width, height):
-        super().__init__("Enemy", x, y, font, width, height, color=(255, 0, 0))
+    def __init__(self, x, y, font, Width, Height):
+        super().__init__("Enemy", x, y, font, Width, Height, color=(255, 0, 0))
 
     def GetClick(self, texts, font):
         game_state.statestop()
+
+
+class mSlime(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        super().__init__("Slime", x, y, font, Width, Height, color=(60, 226, 218))
+
+    def GetClick(self, texts, font):
+        texts.remove(self)
+        val_random = random.randint(0, 100)
+        val = 3 if val_random < 10 else 2
+        for i in range(0, val):
+            random_temp = random.randint(0, 100)
+            if random_temp < 38:
+                new_enemy = mSli(
+                    self.rect.x, self.rect.y, font, self.width, self.height
+                )
+            else:
+                new_enemy = mMe(self.rect.x, self.rect.y, font, self.width, self.height)
+
+            angle = math.radians(random.randint(0, 360))
+            speed = random.uniform(3, 6)  # 可以調整速度範圍
+            new_enemy.vx = math.cos(angle) * speed
+            new_enemy.vy = math.sin(angle) * speed
+
+            texts.append(new_enemy)
+
+
+class mSli(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        super().__init__("Sli", x, y, font, Width, Height, color=(44, 146, 242))
+
+    def GetClick(self, texts, font):
+        game_state.statestop()
+
+
+class mMe(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        super().__init__("Me", x, y, font, Width, Height, color=(60, 226, 140))
+
+    def GetClick(self, texts, font):
+        game_state.betouch()
+        texts.remove(self)
