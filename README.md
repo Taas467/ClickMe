@@ -7,3 +7,7 @@ please install pygame, sys, random first.
 Go to ClickMe folder, and run "python main.py"
 
 and have fun ᕕ ( ᐛ ) ᕗ
+
+...I wanna say that but...
+
+I am still make it WwW
