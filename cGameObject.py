@@ -1,7 +1,7 @@
 import random
 import math
 from cGameGlobal import *
-
+from cAnimation import *
 
 class GameRule:
     def __init__(self, text, x, y, font, Width, Height, color):
@@ -73,10 +73,12 @@ class mClickMe(GameRule):
     def GetClick(self, texts, font):
         game_state.betouch()
         random_temp = random.randint(0, 1000)
-        if random_temp < 200:
+        if random_temp<10:
+            new_enemy = mNuke(self.rect.x, self.rect.y, font, self.width, self.height)
+        elif random_temp < 200:
             new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
         else:
-            new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
+            new_enemy = mNuke(self.rect.x, self.rect.y, font, self.width, self.height)
         while True:
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
@@ -85,6 +87,7 @@ class mClickMe(GameRule):
                 self.vy = -10
                 break
         texts.append(new_enemy)
+        return None 
 
 
 class mEnemy(GameRule):
@@ -93,6 +96,7 @@ class mEnemy(GameRule):
 
     def GetClick(self, texts, font):
         game_state.statestop()
+        return None 
 
 
 class mSlime(GameRule):
@@ -118,6 +122,7 @@ class mSlime(GameRule):
             new_enemy.vy = math.sin(angle) * speed
 
             texts.append(new_enemy)
+        return None 
 
 
 class mSli(GameRule):
@@ -126,6 +131,7 @@ class mSli(GameRule):
 
     def GetClick(self, texts, font):
         game_state.statestop()
+        return None 
 
 
 class mMe(GameRule):
@@ -135,3 +141,23 @@ class mMe(GameRule):
     def GetClick(self, texts, font):
         game_state.betouch()
         texts.remove(self)
+        return None 
+        
+
+class mNuke(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        self.frame_count = 0 
+        self.font=font
+        self.text="N-Bomb"
+        super().__init__(self.text, x, y, font, Width, Height, color=(255,0,0))
+        
+    def update(self):
+        self.frame_count += 1
+        r = int(127 * math.sin(0.05 * self.frame_count) + 128)
+        g = int(127 * math.sin(0.05 * self.frame_count + 2) + 128)
+        b = int(127 * math.sin(0.05 * self.frame_count + 4) + 128)
+        self.surface = self.font.render(self.text, True, (r, g, b))
+        super().update()
+    
+    def GetClick(self, texts, font):
+        return "Nuke"    

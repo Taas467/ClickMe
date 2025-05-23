@@ -1,3 +1,5 @@
+import pygame
+
 class GameState:
     def __init__(self):
         self.state = "playing"
@@ -17,3 +19,5 @@ class GameState:
 
 
 game_state = GameState()
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))

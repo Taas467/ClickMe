@@ -4,12 +4,10 @@ import random
 from cGameObject import *
 from cWave import *
 from cGameGlobal import *
-
+import cAnimation 
 pygame.init()
 
 
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
 shared_font = pygame.font.SysFont(None, 60)
 
 clock = pygame.time.Clock()
@@ -18,19 +16,26 @@ clock = pygame.time.Clock()
 texts = [mClickMe(width // 2, height // 2, shared_font, width, height)]
 click_me_text = texts[0]
 wave_pool = WavePool()
+anim=None
+nuke_clear = False
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mouse_pos = pygame.mouse.get_pos()
             for text in reversed(texts):
                 if text.is_clicked(mouse_pos):
-                    text.GetClick(texts, shared_font)
+                    result = text.GetClick(texts, shared_font)
+                    if result=="Nuke":
+                       anim = cAnimation.NukeAnimation(screen, shared_font, width, height)
+                       nuke_clear = True
                     break
             wave_pool.get_wave(mouse_pos[0], mouse_pos[1])
+            
         elif event.type == pygame.KEYDOWN and game_state.state == "gameover":
             if event.key == pygame.K_SPACE:
                 # 重設遊戲
@@ -46,7 +51,16 @@ while True:
 
     screen.fill((0, 0, 0))
     wave_pool.update_and_draw(screen, texts)
-
+    
+    if anim:
+        anim.update()
+        anim.draw()
+        if anim.is_done():
+            anim = None
+            if nuke_clear:
+                texts[:] = [obj for obj in texts if isinstance(obj, mClickMe)]
+                nuke_pending_clear = False
+    
     if game_state.state == "playing":
         for text in texts:
             text.update()
