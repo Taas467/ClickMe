@@ -7,15 +7,33 @@ git push -u origin mian/master
 
 # update :
 git add .
-git commit -m "說明"
+git commit -m "說明/illustrate"
 git push
 
-# first download :
+# first download:
 (setting user name and email)
 (get the git. URL)
 git clone (URL)
+    > you can choose not to dowload Git history by:
+      git clone  --depth 1 (URL)
 cd (Project)
 (coding and update)
 
 # download
 git pull
+
+# add tag
+git tag -a (Tag) (Commit) -m "說明/illustrate"
+git push origin (Tag)
+
+# delete tag
+git tag -d (Tag)
+git push origin :refs/tags/(Tag)
+
+# checkout tag 
+(clone the full repo)
+git fetch --all --tags
+git checkout tags/(Tag)
+
+# adding branch
+git checkout -b (Branch name)
