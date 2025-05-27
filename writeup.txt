@@ -33,7 +33,12 @@ git push origin :refs/tags/(Tag)
 # checkout tag 
 (clone the full repo)
 git fetch --all --tags
-git checkout tags/(Tag)
+git checkout ./tags/(Tag)
 
 # adding branch
 git checkout -b (Branch name)
+
+# change git commit be the main/master HEAD (Waring! it will cover the HEAD)
+git checkout main/master
+git reset --hard (commit)
+git push origin master --force
