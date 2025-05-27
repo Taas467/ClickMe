@@ -2,7 +2,6 @@ import random
 import math
 from cGameGlobal import *
 
-
 class GameRule:
     def __init__(self, text, x, y, font, Width, Height, color):
         self.surface = font.render(text, True, color)

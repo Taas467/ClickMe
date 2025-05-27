@@ -7,9 +7,6 @@ from cGameGlobal import *
 
 pygame.init()
 
-
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
 shared_font = pygame.font.SysFont(None, 60)
 
 clock = pygame.time.Clock()
