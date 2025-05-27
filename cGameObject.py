@@ -70,9 +70,16 @@ class mClickMe(GameRule):
         )  # 設定為綠色
 
     def GetClick(self, texts, font):
+        global Nuke_now_have 
         game_state.betouch()
         random_temp = random.randint(0, 1000)
-        if random_temp < 200:
+        if random_temp < 1000:
+            if Nuke_now_have==0:
+                new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
+            else:
+                new_enemy = mN_Clear(self.rect.x, self.rect.y, font, self.width, self.height)
+                Nuke_now_have-=1
+        elif random_temp < 200:
             new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
         else:
             new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
@@ -133,4 +140,23 @@ class mMe(GameRule):
 
     def GetClick(self, texts, font):
         game_state.betouch()
+        texts.remove(self)
+        
+class mN_Clear(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        self.frame_count = 0  # 用於顏色變化的時間基準
+        self.font = font
+        self.text = "N-Clear"
+        super().__init__(self.text, x, y, font, Width, Height, color=(255, 0, 0))
+
+    def update(self):
+        # RGB 動態色彩循環
+        self.frame_count += 1
+        r = int(127 * math.sin(0.05 * self.frame_count) + 128)
+        g = int(127 * math.sin(0.05 * self.frame_count + 2) + 128)
+        b = int(127 * math.sin(0.05 * self.frame_count + 4) + 128)
+        self.surface = self.font.render(self.text, True, (r, g, b))
+        super().update()
+
+    def GetClick(self, texts, font):
         texts.remove(self)

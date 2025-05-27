@@ -21,3 +21,5 @@ class GameState:
 game_state = GameState()
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
+Nuke_max_have=1
+Nuke_now_have=1
