@@ -159,4 +159,38 @@ class mN_Clear(GameRule):
         super().update()
 
     def GetClick(self, texts, font):
-        texts.remove(self)
+        new_enemy = mAnim_Warning()
+        texts.append(new_enemy)
+        
+class mAnim_Warning:
+    def __init__(self):
+        self.font = pygame.font.SysFont(None, 60) 
+        self.text = "WARNING"
+        self.color = (225, 252, 136)
+        self.surface = self.font.render(self.text, True, self.color)
+        self.rect = self.surface.get_rect(center=(width // 2, height // 2))
+        self.vx=0
+        self.vy=0
+        self.timer = 0  # 用來計算經過幾幀
+        self.lifetime = 300  # 約等於 5 秒 (60 FPS)
+
+    def update(self):
+        self.timer += 1
+        self.surface = self.font.render(self.text, True, self.color)
+        self.vx=0
+        self.vy=0
+
+    def draw(self, screen):
+        if not self.is_done():
+            screen.blit(self.surface, self.rect)
+        else:
+            game_state.anim_warning=1
+
+    def is_done(self):
+        return self.timer >= self.lifetime
+    
+    def is_clicked(self, pos):
+        return False
+    
+    def GetClick(self, texts, font):
+        pass

@@ -10,7 +10,6 @@ pygame.init()
 shared_font = pygame.font.SysFont(None, 60)
 
 clock = pygame.time.Clock()
-
 # 🔹 一開始只有一個文字
 texts = [mClickMe(width // 2, height // 2, shared_font, width, height)]
 click_me_text = texts[0]
@@ -47,9 +46,14 @@ while True:
     wave_pool.update_and_draw(screen, texts)
 
     if game_state.state == "playing":
+        
         for text in texts:
             text.update()
             text.draw(screen)
+        
+        if game_state.anim_warning==1:
+            game_state.anim_warning=0
+            texts[:] = [obj for obj in texts if isinstance(obj, mClickMe)]     
 
     elif game_state.state == "gameover":
         g_over_font = pygame.font.SysFont(None, 120)
