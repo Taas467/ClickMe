@@ -74,15 +74,18 @@ class mClickMe(GameRule):
         game_state.betouch()
         random_temp = random.randint(0, 1000)
         if random_temp < 1000:
-            if Nuke_now_have==0:
+            if game_state.Nuke_now_have==0:
                 new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
             else:
                 new_enemy = mN_Clear(self.rect.x, self.rect.y, font, self.width, self.height)
-                Nuke_now_have-=1
+                game_state.Nuke_now_have=max(game_state.Nuke_now_have-1,-1)
+                
         elif random_temp < 200:
             new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
+            
         else:
             new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
+            
         while True:
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
@@ -169,6 +172,7 @@ class mAnim_Warning:
         self.color = (225, 252, 136)
         self.surface = self.font.render(self.text, True, self.color)
         self.rect = self.surface.get_rect(center=(width // 2, height // 2))
+        self.rect.x
         self.vx=0
         self.vy=0
         self.timer = 0  # 用來計算經過幾幀

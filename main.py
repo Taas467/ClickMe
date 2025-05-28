@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 texts = [mClickMe(width // 2, height // 2, shared_font, width, height)]
 click_me_text = texts[0]
 wave_pool = WavePool()
-Nuke_now_have=Nuke_max_have
+game_state.Nuke_now_have=Nuke_max_have
 
 while True:
     for event in pygame.event.get():
@@ -38,7 +38,7 @@ while True:
                 game_state.state = "playing"
                 wave_pool.pool.clear()
                 game_state.resta_score()
-                Nuke_now_have=Nuke_max_have
+                game_state.Nuke_now_have=Nuke_max_have
 
     pygame.display.set_caption(f"ClickMe! - Score: {game_state.score}")
 

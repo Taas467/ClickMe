@@ -5,6 +5,7 @@ class GameState:
         self.state = "playing"
         self.score = 0
         self.anim_warning=0
+        self.Nuke_now_have=0
         
     def stateplay(self):
         self.state = "playing"
@@ -24,4 +25,3 @@ width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 
 Nuke_max_have=1
-Nuke_now_have=1
