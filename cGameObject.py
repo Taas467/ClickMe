@@ -73,7 +73,7 @@ class mClickMe(GameRule):
         global Nuke_now_have 
         game_state.betouch()
         random_temp = random.randint(0, 1000)
-        if random_temp < 1000:
+        if random_temp < 50:
             if game_state.Nuke_now_have==0:
                 new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
             else:
@@ -114,7 +114,7 @@ class mSlime(GameRule):
         val = 3 if val_random < 10 else 2
         for i in range(0, val):
             random_temp = random.randint(0, 100)
-            if random_temp < 38:
+            if random_temp > 35:
                 new_enemy = mSli(
                     self.rect.x, self.rect.y, font, self.width, self.height
                 )
@@ -162,36 +162,43 @@ class mN_Clear(GameRule):
         super().update()
 
     def GetClick(self, texts, font):
-        new_enemy = mAnim_Warning()
-        texts.append(new_enemy)
+        if game_state.anim_warning=="stop":
+            game_state.anim_warning="run"
+            new_enemy = mAnim_Warning()
+            texts.append(new_enemy)
         
 class mAnim_Warning:
     def __init__(self):
-        self.font = pygame.font.SysFont(None, 60) 
+        self.font = pygame.font.SysFont(None, 320) 
         self.text = "WARNING"
         self.color = (225, 252, 136)
+        self.rect_x=width*2
+        self.rect_y=height // 2
         self.surface = self.font.render(self.text, True, self.color)
-        self.rect = self.surface.get_rect(center=(width // 2, height // 2))
-        self.rect.x
+        self.rect = self.surface.get_rect(center=(self.rect_x,  self.rect_y))
+       
         self.vx=0
         self.vy=0
-        self.timer = 0  # 用來計算經過幾幀
-        self.lifetime = 300  # 約等於 5 秒 (60 FPS)
+        
 
     def update(self):
-        self.timer += 1
+        self.rect_x-=20
+        self.rect.center = (self.rect_x, self.rect_y)
         self.surface = self.font.render(self.text, True, self.color)
         self.vx=0
         self.vy=0
+        if self.rect.left <=-80 and game_state.anim_warning =="run":
+            game_state.anim_warning="kill"
 
     def draw(self, screen):
         if not self.is_done():
-            screen.blit(self.surface, self.rect)
+            screen.blit(self.surface, self.surface.get_rect(center=(self.rect_x, self.rect_y)))
         else:
-            game_state.anim_warning=1
+            game_state.anim_warning="kill_self"
+             
 
     def is_done(self):
-        return self.timer >= self.lifetime
+        return self.rect.right<=0
     
     def is_clicked(self, pos):
         return False

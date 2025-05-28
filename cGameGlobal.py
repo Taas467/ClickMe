@@ -4,7 +4,7 @@ class GameState:
     def __init__(self):
         self.state = "playing"
         self.score = 0
-        self.anim_warning=0
+        self.anim_warning="stop"
         self.Nuke_now_have=0
         
     def stateplay(self):

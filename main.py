@@ -51,10 +51,14 @@ while True:
             text.update()
             text.draw(screen)
         
-        if game_state.anim_warning==1:
-            game_state.anim_warning=0
-            texts[:] = [obj for obj in texts if isinstance(obj, mClickMe)]     
-
+        if game_state.anim_warning=="kill":
+                game_state.anim_warning="stop"
+                texts[:] = [obj for obj in texts if isinstance(obj, mClickMe) or isinstance(obj, mAnim_Warning)]
+        elif game_state.anim_warning=="kill_self":
+            game_state.anim_warning="stop"
+            texts[:] = [obj for obj in texts if not isinstance(obj, mAnim_Warning)]
+            
+            
     elif game_state.state == "gameover":
         g_over_font = pygame.font.SysFont(None, 120)
         gameover_text = g_over_font.render("Game Over", True, (255, 255, 255))
