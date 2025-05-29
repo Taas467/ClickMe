@@ -19,7 +19,7 @@ def restart_game():
     game_state.Ghost_now_have=Ghost_max_have
 
 
-shared_font = pygame.font.SysFont(None, 60)
+shared_font = pygame.font.SysFont(None, 68)
 
 clock = pygame.time.Clock()
 wave_pool = WavePool()
@@ -82,5 +82,11 @@ while True:
         retry_rect = retry_text.get_rect(center=(width // 2, height // 4 + 200))
         screen.blit(retry_text, retry_rect)
 
+        small_font = pygame.font.SysFont(None, 36)
+        retry_text = small_font.render("No modules", True, (200, 200, 200))
+        retry_rect = retry_text.get_rect(center=(width // 2, height // 2 + 200))
+        screen.blit(retry_text, retry_rect)
+        
+        
     pygame.display.flip()
     clock.tick(60)

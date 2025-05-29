@@ -73,7 +73,7 @@ class mClickMe(GameRule):
         global Nuke_now_have 
         game_state.betouch()
         random_temp = random.randint(0, 1000)
-        if random_temp < 50:
+        if random_temp < 60:
             if game_state.Nuke_now_have==0:
                 new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
             else:
