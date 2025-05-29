@@ -17,7 +17,7 @@ class GameRule:
     def update(self):
         # 模擬跳動
         self.vy += self.gravity
-        self.rect.y += int(self.vy)
+        self.rect.y += self.vy
         self.rect.x += self.vx
 
         if self.rect.top < 0:
@@ -62,7 +62,7 @@ class GameRule:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
-
+# --------------------------------------------------------
 class mClickMe(GameRule):
     def __init__(self, x, y, font, Width, Height):
         super().__init__(
@@ -81,6 +81,13 @@ class mClickMe(GameRule):
                 game_state.Nuke_now_have=max(game_state.Nuke_now_have-1,-1)
                 
         elif random_temp < 200:
+            if game_state.Ghost_now_have==0:
+                new_enemy = mSli(self.rect.x, self.rect.y, font, self.width, self.height)
+            else:
+                new_enemy = mGhost(self.rect.x, self.rect.y, font, self.width, self.height)
+                game_state.Ghost_now_have=max(game_state.Ghost_now_have-1,-1)
+                
+        elif random_temp < 400:
             new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
             
         else:
@@ -96,6 +103,8 @@ class mClickMe(GameRule):
         texts.append(new_enemy)
 
 
+
+
 class mEnemy(GameRule):
     def __init__(self, x, y, font, Width, Height):
         super().__init__("Enemy", x, y, font, Width, Height, color=(255, 0, 0))
@@ -104,9 +113,12 @@ class mEnemy(GameRule):
         game_state.statestop()
 
 
+
+
 class mSlime(GameRule):
     def __init__(self, x, y, font, Width, Height):
         super().__init__("Slime", x, y, font, Width, Height, color=(60, 226, 218))
+        
 
     def GetClick(self, texts, font):
         texts.remove(self)
@@ -129,12 +141,16 @@ class mSlime(GameRule):
             texts.append(new_enemy)
 
 
+
+
 class mSli(GameRule):
     def __init__(self, x, y, font, Width, Height):
         super().__init__("Sli", x, y, font, Width, Height, color=(44, 146, 242))
 
     def GetClick(self, texts, font):
         game_state.statestop()
+
+
 
 
 class mMe(GameRule):
@@ -167,6 +183,57 @@ class mN_Clear(GameRule):
             new_enemy = mAnim_Warning()
             texts.append(new_enemy)
         
+
+        
+
+class mGhost(GameRule):
+    def __init__(self, x, y, font, Width, Height):
+        super().__init__("Ghost", x, y, font, Width, Height, color=(173, 173, 173))
+        self.vx=random.randint(-1, 1)
+        self.vy=random.randint(-1, 1)
+
+    def update(self):
+        
+        self.rect.y += self.vy
+        self.rect.x += self.vx
+        # 飄動
+        target_x, target_y = pygame.mouse.get_pos()
+        
+        dx = target_x - self.rect.centerx
+        dy = target_y - self.rect.centery
+        
+        distance = math.hypot(dx, dy)  # 計算距離（避免除以 0）
+        if distance > 0:
+            dx /= distance
+            dy /= distance
+
+            add_speed =0.3   # 你可以調整速度
+            self.vx =max(-10, min((self.vx+(dx * add_speed)),10))
+            self.vy =max(-10, min((self.vy+(dy * add_speed)),10))
+
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.vy = -self.vy * 0.9
+
+        # 底部
+        if self.rect.bottom >= self.height:
+            self.rect.bottom = self.height
+            self.vy = -self.vy * 0.9
+
+        # 左右邊界
+        if self.rect.left <= 0:
+            self.rect.left  =0
+            self.vx = -self.vx * 0.9
+        
+        if self.rect.right >= self.width:
+            self.rect.right = self.width
+            self.vx = -self.vx * 0.9
+    
+    def GetClick(self, texts, font):
+        game_state.statestop()
+
+
+
 class mAnim_Warning:
     def __init__(self):
         self.font = pygame.font.SysFont(None, 320) 
