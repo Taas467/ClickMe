@@ -19,7 +19,7 @@ def restart_game():
     game_state.Ghost_now_have=Ghost_max_have
 
 
-shared_font = pygame.font.SysFont(None, 68)
+shared_font = pygame.font.SysFont(None, 63)
 
 clock = pygame.time.Clock()
 wave_pool = WavePool()
