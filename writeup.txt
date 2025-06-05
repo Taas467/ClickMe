@@ -38,6 +38,10 @@ git checkout ./tags/(Tag)
 # adding branch
 git checkout -b (Branch name)
 
+# push in branch
+git push --set-upstream origin (Branch name)
+
+
 # change git commit be the main/master HEAD (Waring! it will cover the HEAD)
 git checkout main/master
 git reset --hard (commit)
