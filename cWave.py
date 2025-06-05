@@ -37,15 +37,15 @@ class WaveEffect:
         self.radius = 0
         self.max_radius = 250
         self.alpha = 255
-        self.affected = set()
+        self.affected_texts = set()
         self.active = True
-        self.pushed = False  # ✅ 加入已推動標記
 
     def update(self):
         if not self.active:
             return
         self.radius += 8
         self.alpha -= 16
+        
         if self.alpha < 0:
             self.alpha = 0
 
@@ -68,17 +68,23 @@ class WaveEffect:
         return self.radius < self.max_radius and self.active
 
     def apply_to(self, text_list):
-        if not self.active or self.pushed:
+        if not self.active :
             return
+        
         for text in text_list:
+            if id(text) in self.affected_texts:
+                continue
+            
             dx = text.rect.centerx - self.x
             dy = text.rect.centery - self.y
             dist = (dx**2 + dy**2) ** 0.5
+            
             if dist <= 150:
-                power = min(max(3, 400 / (dist + 1)), 10)  # ✅ 強化推力
+                power = min(max(1.2,150/dist+1 ), 7)  # ✅ 強化推力
                 text.vx += (dx / (dist + 1)) * power
                 text.vy += (dy / (dist + 1)) * power
-        self.pushed = True  # ✅ 確保只推動一次
+                self.affected_texts.add(id(text))
+
 
     def deactivate(self):
         self.active = False

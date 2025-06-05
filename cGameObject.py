@@ -72,37 +72,31 @@ class mClickMe(GameRule):
         )  # 設定為綠色
 
     def GetClick(self, texts, font):
-        global Nuke_now_have
         game_state.betouch()
-        random_temp = random.randint(0, 1000)
-        if random_temp < 60:
-            if game_state.Nuke_now_have == 0:
-                new_enemy = mEnemy(
-                    self.rect.x, self.rect.y, font, self.width, self.height
-                )
-            else:
-                new_enemy = mN_Clear(
-                    self.rect.x, self.rect.y, font, self.width, self.height
-                )
-                game_state.Nuke_now_have = max(game_state.Nuke_now_have - 1, -1)
+        random_temp=random.randint(0,1000)
+        enemy_x, enemy_y = self.rect.x, self.rect.y
+        common_args = (enemy_x, enemy_y, font, self.width, self.height)
 
-        elif random_temp < 200:
-            if game_state.Ghost_now_have == 0:
-                new_enemy = mSli(
-                    self.rect.x, self.rect.y, font, self.width, self.height
-                )
-            else:
-                new_enemy = mGhost(
-                    self.rect.x, self.rect.y, font, self.width, self.height
-                )
-                game_state.Ghost_now_have = max(game_state.Ghost_now_have - 1, -1)
+        #   機率範圍（上限）、生成邏輯
+        enemy_table = [
+            (60, lambda: mN_Clear(*common_args) if game_state.Nuke_now_have > 0 else mEnemy(*common_args)),
+            (200, lambda: mGhost(*common_args) if game_state.Ghost_now_have > 0 else mSli(*common_args)),
+            (400, lambda: mSlime(*common_args)),
+            (1000, lambda: mEnemy(*common_args)),  # fallback
+        ]
 
-        elif random_temp < 400:
-            new_enemy = mSlime(self.rect.x, self.rect.y, font, self.width, self.height)
-
-        else:
-            new_enemy = mEnemy(self.rect.x, self.rect.y, font, self.width, self.height)
-
+        # 根據範圍查表
+        for upper_bound, constructor in enemy_table:
+            if random_temp < upper_bound:
+                new_enemy = constructor()
+                break
+        # 資源扣除
+        if isinstance(new_enemy, mN_Clear):
+            game_state.Nuke_now_have = max(game_state.Nuke_now_have - 1, 0)
+        elif isinstance(new_enemy, mGhost):
+            game_state.Ghost_now_have = max(game_state.Ghost_now_have - 1, 0)
+            
+            
         while True:
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
@@ -111,7 +105,8 @@ class mClickMe(GameRule):
                 self.vy = -10
                 break
         texts.append(new_enemy)
-
+        
+# mClickme
 
 class mEnemy(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -119,7 +114,7 @@ class mEnemy(GameRule):
 
     def GetClick(self, texts, font):
         game_state.statestop()
-
+# mEnemy
 
 class mSlime(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -144,7 +139,7 @@ class mSlime(GameRule):
             new_enemy.vy = math.sin(angle) * speed
 
             texts.append(new_enemy)
-
+# mSlime
 
 class mSli(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -152,7 +147,7 @@ class mSli(GameRule):
 
     def GetClick(self, texts, font):
         game_state.statestop()
-
+# mSli
 
 class mMe(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -161,7 +156,7 @@ class mMe(GameRule):
     def GetClick(self, texts, font):
         game_state.betouch()
         texts.remove(self)
-
+# mMe
 
 class mN_Clear(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -184,7 +179,7 @@ class mN_Clear(GameRule):
             game_state.anim_warning = "run"
             new_enemy = mAnim_Warning()
             texts.append(new_enemy)
-
+# mNuke
 
 class mGhost(GameRule):
     def __init__(self, x, y, font, Width, Height):
@@ -231,7 +226,7 @@ class mGhost(GameRule):
 
     def GetClick(self, texts, font):
         game_state.statestop()
-
+# mGhost
 
 class mAnim_Warning:
     def __init__(self):
@@ -271,3 +266,4 @@ class mAnim_Warning:
 
     def GetClick(self, texts, font):
         pass
+# Warning Anim
