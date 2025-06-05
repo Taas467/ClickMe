@@ -1,4 +1,4 @@
-# Click Me! (ver 0.1)
+# Click Me! (ver 0.2)
 
 it didn't have start menu (´･_･`)
 
