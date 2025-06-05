@@ -24,7 +24,7 @@ git pull
 
 # add tag
 git tag -a (Tag) (Commit) -m "說明/illustrate"
-git push origin (Tag)
+git push origin :refs/tags/(Tag)
 
 # delete tag
 git tag -d (Tag)

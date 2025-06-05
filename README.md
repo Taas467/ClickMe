@@ -10,4 +10,4 @@ and have fun ᕕ ( ᐛ ) ᕗ
 
 ...I wanna say that but...
 
-I am still make it WwW, pls play the ver0.1 (you can see it in the tag)
+I am still make it WwW, pls play the ver0.2 (you can see it in the tag)
