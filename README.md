@@ -1,4 +1,4 @@
-# Click Me! (ver 0.1)
+# Click Me! (ver 0.2)
 
 it didn't have start menu (´･_･`)
 
@@ -8,6 +8,8 @@ Go to ClickMe folder, and run "python main.py"
 
 and have fun ᕕ ( ᐛ ) ᕗ
 
-...I wanna say that but...
+game rule:
 
-I am still make it WwW, pls play the ver0.1 (you can see it in the tag)
+you can click "ClickMe" "Slime" "Me" "N-clear"
+
+else... knowing with play XD
