@@ -207,7 +207,7 @@ class mGhost(GameRule):
             self.vy = max(-10, min((self.vy + (dy * add_speed)), 10))
 
         if self.rect.top < 0:
-            self.rect.top = 0
+            self.rect.top = 0.1
             self.vy = -self.vy * 0.9
 
         # 底部
