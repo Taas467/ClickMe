@@ -81,6 +81,7 @@ while True:
                 if isinstance(obj, mClickMe) or isinstance(obj, mAnim_Warning)
             ]
             game_state.Ghost_now_have = Ghost_max_have
+            game_state.Nuke_now_have = Nuke_max_have
 
         elif game_state.anim_warning == "kill_self":
             game_state.anim_warning = "stop"

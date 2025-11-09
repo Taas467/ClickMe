@@ -76,13 +76,13 @@ class mClickMe(GameRule):
         random_temp=random.randint(0,1000)
         enemy_x, enemy_y = self.rect.x, self.rect.y
         common_args = (enemy_x, enemy_y, font, self.width, self.height)
-
+        Nuke_probability=1000
         #   機率範圍（上限）、生成邏輯
         enemy_table = [
             (60, lambda: mN_Clear(*common_args) if game_state.Nuke_now_have > 0 else mEnemy(*common_args)),
             (200, lambda: mGhost(*common_args) if game_state.Ghost_now_have > 0 else mSli(*common_args)),
             (400, lambda: mSlime(*common_args)),
-            (1000, lambda: mEnemy(*common_args)),  # fallback
+            (Nuke_probability, lambda: mEnemy(*common_args)),  # fallback
         ]
 
         # 根據範圍查表
@@ -93,6 +93,7 @@ class mClickMe(GameRule):
         # 資源扣除
         if isinstance(new_enemy, mN_Clear):
             game_state.Nuke_now_have = max(game_state.Nuke_now_have - 1, 0)
+            Nuke_probability+=500
         elif isinstance(new_enemy, mGhost):
             game_state.Ghost_now_have = max(game_state.Ghost_now_have - 1, 0)
             
