@@ -8,7 +8,6 @@ from cScreen import *
 
 pygame.init()
 
-
 def restart_game():
     texts.clear()
     texts.append(mClickMe(width // 2, height // 2, shared_font, width, height))
@@ -16,7 +15,6 @@ def restart_game():
     game_state.resta_score()
     game_state.Nuke_now_have = Nuke_max_have
     game_state.Ghost_now_have = Ghost_max_have
-
 
 shared_font = pygame.font.SysFont(None, 63)
 
@@ -26,7 +24,7 @@ pygame.display.set_caption("ClickMe!")
 
 start_screen.draw(screen)
 pygame.display.flip()
-pygame.time.delay(1000)
+pygame.time.delay(1000) 
 
 clock = pygame.time.Clock()
 wave_pool = WavePool()
@@ -34,9 +32,19 @@ texts = []
 restart_game()
 game_state.statestart()
 
-while True:
-    for event in pygame.event.get():
+# 強制刷新事件
+pygame.event.pump()
 
+screen.fill((0,0,0))
+wave_pool.update_and_draw(screen, texts)
+for text in texts:
+    text.draw(screen)
+pygame.display.flip()
+
+while True:
+    
+    pygame.event.pump()
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -68,7 +76,6 @@ while True:
             start_screen.ready_to_start = False
 
     elif game_state.state == "playing":
-
         for text in texts:
             text.update()
             text.draw(screen)
