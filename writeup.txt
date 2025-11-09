@@ -3,7 +3,7 @@ git add .
 git commit -m "Initial commit"
 (get the github repo URL)
 git remote add origin (URL)
-git push -u origin mian/master
+git push -u origin maaain/master
 
 # update :
 git add .

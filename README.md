@@ -2,7 +2,7 @@
 
 it didn't have start menu (´･_･`)
 
-please install pygame, sys, random first.
+please install pygame first.
 
 Go to ClickMe folder, and run "python main.py"
 
