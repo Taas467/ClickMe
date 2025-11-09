@@ -70,19 +70,20 @@ class mClickMe(GameRule):
         super().__init__(
             "ClickMe", x, y, font, Width, Height, color=(0, 255, 0)
         )  # 設定為綠色
-
+        self.Nuke_probability=60
+        
     def GetClick(self, texts, font):
         game_state.betouch()
         random_temp=random.randint(0,1000)
         enemy_x, enemy_y = self.rect.x, self.rect.y
         common_args = (enemy_x, enemy_y, font, self.width, self.height)
-        Nuke_probability=1000
+        
         #   機率範圍（上限）、生成邏輯
         enemy_table = [
-            (60, lambda: mN_Clear(*common_args) if game_state.Nuke_now_have > 0 else mEnemy(*common_args)),
+            (self.Nuke_probability, lambda: mN_Clear(*common_args) if game_state.Nuke_now_have > 0 else mEnemy(*common_args)),
             (200, lambda: mGhost(*common_args) if game_state.Ghost_now_have > 0 else mSli(*common_args)),
             (400, lambda: mSlime(*common_args)),
-            (Nuke_probability, lambda: mEnemy(*common_args)),  # fallback
+            (1000, lambda: mEnemy(*common_args)),  # fallback
         ]
 
         # 根據範圍查表
@@ -90,21 +91,24 @@ class mClickMe(GameRule):
             if random_temp < upper_bound:
                 new_enemy = constructor()
                 break
+       
         # 資源扣除
         if isinstance(new_enemy, mN_Clear):
             game_state.Nuke_now_have = max(game_state.Nuke_now_have - 1, 0)
-            Nuke_probability+=500
+            self.Nuke_probability = max(self.Nuke_probability - 10, 10)
+
         elif isinstance(new_enemy, mGhost):
             game_state.Ghost_now_have = max(game_state.Ghost_now_have - 1, 0)
             
             
-        while True:
+        for _ in range(100):
             temp_x = random.randint(0, self.width)
             temp_y = random.randint(0, self.height)
             if (temp_x - self.rect.x) ** 2 + (temp_y - self.rect.y) ** 2 > 10000:
                 self.rect.x, self.rect.y = temp_x, temp_y
                 self.vy = -10
                 break
+
         texts.append(new_enemy)
         
 # mClickme
@@ -176,6 +180,7 @@ class mN_Clear(GameRule):
         super().update()
 
     def GetClick(self, texts, font):
+        texts.remove(self)
         if game_state.anim_warning == "stop":
             game_state.anim_warning = "run"
             new_enemy = mAnim_Warning()
